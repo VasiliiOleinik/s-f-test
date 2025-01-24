@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "allowJs": true,
+    "noEmit": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "parserOptions": {
+    "tsconfigRootDir": "packages/frontend",
+    "project": "packages/frontend/tsconfig.json"
+  },
+  "include": ["src/**/*", "next-env.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}
