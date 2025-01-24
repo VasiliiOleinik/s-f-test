@@ -2,7 +2,7 @@ import React from 'react';
 import { useEarthquakeForm } from './useEarthquakeForm';
 import { Controller } from 'react-hook-form';
 import { Button, Card } from '@radix-ui/themes';
-import Input from '../Input/input';
+import Input from '@/components/Input/input';
 import { INPUT_TYPES } from '@/constants';
 import { validateNumber } from '@/utils';
 

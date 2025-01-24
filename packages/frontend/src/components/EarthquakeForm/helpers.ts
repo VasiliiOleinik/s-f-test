@@ -9,5 +9,9 @@ export const EarthquakeSchema = z.object({
     .max(10, { message: 'Value must be at most 10' }),
   date: z.string().nonempty({ message: 'This field is required!' }),
 });
+export const EarthquakesSchema = z.object({
+  earthquakes: z.array(EarthquakeSchema),
+});
 
 export type EarthquakeSchemaType = z.infer<typeof EarthquakeSchema>;
+export type EarthquakesSchemaType = z.infer<typeof EarthquakesSchema>;

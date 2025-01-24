@@ -33,13 +33,13 @@ export const DELETE_EARTHQUAKE = gql`
 `;
 
 export const UPDATE_EARTHQUAKE = gql`
-  mutation AddEarthquake(
+  mutation UpdateEarthquake(
     $id: ID!
     $location: String!
     $magnitude: Float!
     $date: String!
   ) {
-    addEarthquake(
+    updateEarthquake(
       id: $id
       location: $location
       magnitude: $magnitude
