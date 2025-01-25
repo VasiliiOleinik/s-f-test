@@ -7,6 +7,7 @@ import connectToDatabase from './database/connect';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import uploadRoute from './routes/uploadRoute';
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ const startServer = async () => {
   app.use(cors());
 
   app.use('/graphql', bodyParser.json(), expressMiddleware(server));
+
+  // app.use(uploadRoute);
 
   await connectToDatabase();
 

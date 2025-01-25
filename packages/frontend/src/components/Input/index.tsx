@@ -1,6 +1,7 @@
 import React from 'react';
 import { INPUT_TYPES } from '@/constants';
 import { Box } from '@radix-ui/themes';
+import { InputProps } from './types';
 
 const Input = ({
   type = INPUT_TYPES.text,
@@ -8,12 +9,14 @@ const Input = ({
   readOnly = false,
   sx = {},
   error = '',
+  value,
   ...rest
-}) => {
+}: InputProps) => {
   return (
     <Box>
       <input
         {...rest}
+        value={value}
         type={type}
         placeholder={placeholder}
         readOnly={readOnly}

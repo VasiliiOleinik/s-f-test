@@ -10,10 +10,14 @@ import {
   EarthquakesSchemaType,
   EarthquakesSchema,
 } from '@/components/EarthquakeForm/helpers';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { prepareEarthquakeData } from './helpers';
+import { LIMIT, PAGE } from '@/constants';
+import { ID } from '@/types';
 
 export const useEarthquakeList = () => {
-  const [activeFieldId, setActiveFieldId] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(PAGE);
+  const [activeFieldId, setActiveFieldId] = useState<ID>('');
   const {
     control,
     reset,
@@ -25,49 +29,99 @@ export const useEarthquakeList = () => {
     mode: 'all',
   });
 
-  const { fields } = useFieldArray({ control, name: 'earthquakes' });
+  const { fields } = useFieldArray({
+    control,
+    name: 'earthquakes',
+    keyName: 'fieldKey',
+  });
 
-  const { data, loading, error } = useQuery(GET_EARTHQUAKES, {
-    onCompleted: (fetchedData) => {
-      reset({ earthquakes: fetchedData.getEarthquakes });
+  const { data, loading, refetch } = useQuery(GET_EARTHQUAKES, {
+    variables: {
+      pagination: {
+        page: currentPage,
+        limit: LIMIT,
+      },
     },
+    fetchPolicy: 'cache-and-network',
+    notifyOnNetworkStatusChange: true,
   });
 
   const [deleteEarthquake] = useMutation(DELETE_EARTHQUAKE, {
-    refetchQueries: [{ query: GET_EARTHQUAKES }],
+    refetchQueries: [
+      {
+        query: GET_EARTHQUAKES,
+        variables: { pagination: { page: currentPage, limit: LIMIT } },
+      },
+    ],
     awaitRefetchQueries: true,
   });
 
   const [updateEarthquake] = useMutation(UPDATE_EARTHQUAKE, {
-    refetchQueries: [{ query: GET_EARTHQUAKES }],
+    refetchQueries: [
+      {
+        query: GET_EARTHQUAKES,
+        variables: { pagination: { page: currentPage, limit: LIMIT } },
+      },
+    ],
     awaitRefetchQueries: true,
   });
 
-  const currentEarthquake = watch(
-    `earthquakes.${fields.findIndex(({ id }) => id === activeFieldId)}`
+  const currentEarthquakeIndex = useMemo(
+    () => fields.findIndex(({ id }) => id === activeFieldId),
+    [fields, activeFieldId]
   );
+
+  const currentEarthquake = watch(`earthquakes.${currentEarthquakeIndex}`);
 
   function handleUpdate(): void {
     if (!currentEarthquake) return;
     // TODO: for future check if currentEarthquake is different from the original one
 
     updateEarthquake({
-      variables: { ...currentEarthquake },
+      variables: {
+        ...currentEarthquake,
+        magnitude: Number(currentEarthquake.magnitude),
+      },
     });
 
     setActiveFieldId('');
   }
 
+  const handleDelete = useCallback(
+    async (id: ID) => {
+      try {
+        await deleteEarthquake({ variables: { id } });
+      } catch (error) {
+        console.error('Delete failed:', error);
+      }
+    },
+    [deleteEarthquake]
+  );
+
+  const handlePageChange = useCallback(
+    async (newPage: number) => {
+      setCurrentPage(newPage);
+      await refetch({ pagination: { page: newPage, limit: LIMIT } });
+    },
+    [refetch]
+  );
+
+  useEffect(() => {
+    if (!!data?.getEarthquakes) {
+      reset(prepareEarthquakeData(data.getEarthquakes.earthquakes));
+    }
+  }, [data, reset]);
+
   return {
-    data,
     loading,
-    error,
-    deleteEarthquake,
+    handleDelete,
     fields,
     control,
     errors,
     setActiveFieldId,
     activeFieldId,
     handleUpdate,
+    data,
+    handlePageChange,
   };
 };

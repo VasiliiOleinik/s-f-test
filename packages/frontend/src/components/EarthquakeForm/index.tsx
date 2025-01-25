@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useEarthquakeForm } from './useEarthquakeForm';
 import { Controller } from 'react-hook-form';
 import { Button, Card } from '@radix-ui/themes';
-import Input from '@/components/Input/input';
+import Input from '@/components/Input';
 import { INPUT_TYPES } from '@/constants';
 import { validateNumber } from '@/utils';
 
@@ -16,7 +16,12 @@ const EarthquakeForm = () => {
           name="location"
           control={control}
           render={({ field }) => (
-            <Input {...field} error={errors?.location?.message} />
+            <Input
+              {...field}
+              value={field.value}
+              placeholder="Location"
+              error={errors?.location?.message}
+            />
           )}
         />
         <Controller
@@ -25,7 +30,10 @@ const EarthquakeForm = () => {
           render={({ field }) => (
             <Input
               {...field}
-              onChange={(e) => field.onChange(validateNumber(e.target.value))}
+              value={field.value}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                field.onChange(validateNumber(e.target.value))
+              }
               sx={{ margin: '0 15px' }}
               error={errors?.magnitude?.message}
             />
@@ -37,6 +45,7 @@ const EarthquakeForm = () => {
           render={({ field }) => (
             <Input
               {...field}
+              value={field.value}
               type={INPUT_TYPES.date}
               error={errors?.date?.message}
             />

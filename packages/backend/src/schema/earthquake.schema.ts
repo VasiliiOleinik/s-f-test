@@ -8,8 +8,20 @@ export const typeDefs = gql`
     date: String!
   }
 
+  type PaginatedEarthquakesResponse {
+    total: Int!
+    page: Int!
+    pages: Int!
+    earthquakes: [Earthquake!]!
+  }
+
+  input PaginationInput {
+    page: Int
+    limit: Int
+  }
+
   type Query {
-    getEarthquakes: [Earthquake!]
+    getEarthquakes(pagination: PaginationInput): PaginatedEarthquakesResponse!
   }
 
   type Mutation {
@@ -18,12 +30,14 @@ export const typeDefs = gql`
       magnitude: Float!
       date: String!
     ): Earthquake
+
     updateEarthquake(
       id: ID!
       location: String
       magnitude: Float
       date: String
     ): Earthquake
+
     deleteEarthquake(id: ID!): Boolean
   }
 `;

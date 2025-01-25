@@ -1,17 +1,19 @@
-export function validateNumber(value: unknown): number | string {
-  if (typeof value === 'number' && !isNaN(value)) {
-    return value;
-  }
+export function validateNumber(value: unknown): string {
+  if (typeof value === 'string') {
+    const sanitized = value.replace(/[^0-9.-]/g, '');
 
-  const parsed = parseFloat(value as string);
-  if (!isNaN(parsed)) {
-    return parsed;
-  }
+    if (/^-?\d*\.?\d*$/.test(sanitized)) {
+      return sanitized;
+    }
 
+    return '';
+  }
   return '';
 }
 
-export function formatDateForInput(timestamp: string | number | undefined): string {
+export function formatDateForInput(
+  timestamp: string | number | undefined
+): string {
   if (!timestamp) return '';
 
   const date = new Date(Number(timestamp));
@@ -20,6 +22,6 @@ export function formatDateForInput(timestamp: string | number | undefined): stri
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-  
+
   return `${year}-${month}-${day}`;
 }

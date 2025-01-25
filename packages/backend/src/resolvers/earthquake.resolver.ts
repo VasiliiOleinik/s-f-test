@@ -1,28 +1,35 @@
 import Earthquake from '../models/earthquake.model';
+import { ID, PaginationInput } from '../types';
+import { getPaginatedEarthquakes } from '../utils/getPaginatedEarthquakes';
 
 export const resolvers = {
   Query: {
-    getEarthquakes: async () => {
+    getEarthquakes: async (
+      _: any,
+      { pagination }: { pagination: PaginationInput }
+    ) => {
       try {
-        const earthquakes = await Earthquake.find();
-        return earthquakes || [];
+        return await getPaginatedEarthquakes(pagination || {});
       } catch (error) {
-        throw new Error('Failed to fetch earthquakes');
+        throw new Error(`Earthquakes fetch failed: ${error}`);
       }
     },
   },
   Mutation: {
     addEarthquake: async (_: any, { location, magnitude, date }: any) => {
       const earthquake = new Earthquake({ location, magnitude, date });
-      await earthquake.save();
-      return earthquake;
+      return await earthquake.save();
     },
-    updateEarthquake: async (_: any, { id, ...update }: any) => {
+    updateEarthquake: async (_: any, { id, ...update }: ID) => {
       return await Earthquake.findByIdAndUpdate(id, update, { new: true });
     },
-    deleteEarthquake: async (_: any, { id }: any) => {
-      const result = await Earthquake.findByIdAndDelete(id);
-      return !!result;
+    deleteEarthquake: async (_: any, { id }: ID) => {
+      try {
+        const response = await Earthquake.findByIdAndDelete(id);
+        return !!response;
+      } catch (error) {
+        throw new Error(`Failed to delete earthquake: ${error}`);
+      }
     },
   },
 };
