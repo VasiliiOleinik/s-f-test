@@ -4,6 +4,7 @@ import { EarthquakeSchema, EarthquakeSchemaType } from './helpers';
 import { useMutation } from '@apollo/client';
 import { ADD_EARTHQUAKE, GET_EARTHQUAKES } from '@/queries';
 import { DEFAULT_FIELD, PAGE, LIMIT } from '@/constants';
+import client from '@/apollo/client';
 
 export const useEarthquakeForm = () => {
   const [addEarthquake] = useMutation(ADD_EARTHQUAKE, {
@@ -14,6 +15,9 @@ export const useEarthquakeForm = () => {
       },
     ],
     awaitRefetchQueries: true,
+    onCompleted: () => {
+      client.cache.evict({ fieldName: "getEarthquakes" });
+    }
   });
 
   const {
