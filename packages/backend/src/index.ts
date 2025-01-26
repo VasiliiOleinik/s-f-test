@@ -29,8 +29,8 @@ const startServer = async () => {
 
   await connectToDatabase();
 
-  app.listen(4000, () => {
-    console.log('Server is running on http://localhost:4000/graphql');
+  app.listen(process.env.PORT, () => {
+    console.log(`Server is running on http://localhost:${process.env.PORT}/graphql`);
   });
 };
 
