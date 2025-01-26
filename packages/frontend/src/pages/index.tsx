@@ -2,7 +2,6 @@ import React from 'react';
 import EarthquakeList from '@/components/EarthquakeList';
 import EarthquakeForm from '@/components/EarthquakeForm';
 import { Box, Container, Heading, Separator } from '@radix-ui/themes';
-import CSVUploader from '@/components/CSVUploader';
 
 const Home = () => (
   <Box>
@@ -13,7 +12,6 @@ const Home = () => (
       <EarthquakeForm />
       <Separator my="5" size="4" />
       <EarthquakeList />
-      {/* <CSVUploader /> */}
     </Container>
   </Box>
 );
