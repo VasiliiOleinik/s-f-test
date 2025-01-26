@@ -16,10 +16,16 @@
     "packages/backend",
     "packages/frontend"
   ],
-  "author": "",
+  "author": "Vasyl Oliinyk",
   "license": "ISC",
   "devDependencies": {
     "knip": "^5.43.3",
     "prettier": "^3.4.2"
+  },
+  {
+  "engines": {
+    "node": ">=18.x",
+    "pnpm": ">=8.x"
   }
+
 }
