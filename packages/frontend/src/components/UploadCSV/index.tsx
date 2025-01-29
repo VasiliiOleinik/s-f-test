@@ -9,10 +9,10 @@ function UploadCSV() {
 
   const handleUpload = async () => {
     if (!file) {
-      console.error("Select file first!");
+      console.error('Select file first!');
       return;
     }
-  
+
     await uploadCSV({
       variables: { file },
     });
