@@ -7,13 +7,14 @@ import connectToDatabase from './database/connect';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import uploadRoute from './routes/uploadRoute';
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
 dotenv.config();
 
 const startServer = async () => {
   const app = express();
 
+  app.use(graphqlUploadExpress());
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -21,11 +22,13 @@ const startServer = async () => {
 
   await server.start();
 
-  app.use(cors());
+  app.use(cors({
+    origin: ["http://localhost:3000", "https://s-f-test.vercel.app/"],
+    credentials: true,
+    methods: ['POST', 'GET', 'OPTIONS'],
+  }));
 
   app.use('/graphql', bodyParser.json(), expressMiddleware(server));
-
-  // app.use(uploadRoute);
 
   await connectToDatabase();
 

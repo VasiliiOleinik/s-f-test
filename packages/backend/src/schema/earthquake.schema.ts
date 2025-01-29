@@ -1,6 +1,8 @@
 import { gql } from 'apollo-server-express';
 
 export const typeDefs = gql`
+  scalar Upload
+
   type Earthquake {
     id: ID!
     location: String!
@@ -13,6 +15,11 @@ export const typeDefs = gql`
     page: Int!
     pages: Int!
     earthquakes: [Earthquake!]!
+  }
+
+  type UploadResponse {
+    success: Boolean!
+    message: String!
   }
 
   input PaginationInput {
@@ -39,5 +46,6 @@ export const typeDefs = gql`
     ): Earthquake
 
     deleteEarthquake(id: ID!): Boolean
+    uploadEarthquakesCSV(file: Upload!): UploadResponse!
   }
 `;

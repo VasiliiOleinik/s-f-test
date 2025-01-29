@@ -57,3 +57,12 @@ export const UPDATE_EARTHQUAKE = gql`
     }
   }
 `;
+
+export const UPLOAD_EARTHQUAKES_CSV = gql`
+  mutation UploadEarthquakesCSV($file: Upload!) {
+    uploadEarthquakesCSV(file: $file) {
+      success
+      message
+    }
+  }
+`;

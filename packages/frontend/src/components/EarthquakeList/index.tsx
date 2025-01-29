@@ -27,8 +27,8 @@ const EarthquakeList = () => {
       {!!loading && <Spinner />}
       {!loading && !fields?.length && <p>No data :(</p>}
       {!loading && fields?.length ? (
-        <Table.Root variant="surface" mt="4">
-          <EarthquakeListHeader />
+        <Table.Root variant="surface" mt="4" style={{maxHeight: `calc(100vh - 350px)`, overflowY: 'auto'}}>
+          <EarthquakeListHeader/>
           <EarthquakeListBody
             handleDelete={handleDelete}
             fields={fields}

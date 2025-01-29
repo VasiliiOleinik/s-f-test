@@ -2,6 +2,7 @@ import React from 'react';
 import EarthquakeList from '@/components/EarthquakeList';
 import EarthquakeForm from '@/components/EarthquakeForm';
 import { Box, Container, Heading, Separator } from '@radix-ui/themes';
+import UploadCSV from '@/components/UploadCSV';
 
 const Home = () => (
   <Box>
@@ -12,6 +13,7 @@ const Home = () => (
       <EarthquakeForm />
       <Separator my="5" size="4" />
       <EarthquakeList />
+      <UploadCSV />
     </Container>
   </Box>
 );

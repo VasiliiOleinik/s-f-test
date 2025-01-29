@@ -15,6 +15,7 @@ const Pagination = ({
           key={item}
           disabled={page === item}
           style={{ cursor: 'pointer' }}
+          size="1"
           onClick={() => handlePageChange(item)}
         >
           {item}
