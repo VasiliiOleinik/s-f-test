@@ -21,9 +21,5 @@
   "devDependencies": {
     "knip": "^5.43.3",
     "prettier": "^3.4.2"
-  },
-  "engines": {
-    "node": ">=18.x",
-    "pnpm": ">=9.x"
   }
 }
