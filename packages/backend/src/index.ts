@@ -22,18 +22,23 @@ const startServer = async () => {
 
   await server.start();
 
-  app.use(cors({
-    origin: ["http://localhost:3000", "https://s-f-test.vercel.app/"],
-    credentials: true,
-    methods: ['POST', 'GET', 'OPTIONS'],
-  }));
+  app.use(
+    cors({
+      origin: ['http://localhost:3000', 'https://s-f-test.vercel.app/'],
+      credentials: true,
+      methods: ['POST', 'GET', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    })
+  );
 
   app.use('/graphql', bodyParser.json(), expressMiddleware(server));
 
   await connectToDatabase();
 
   app.listen(process.env.PORT, () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT}/graphql`);
+    console.log(
+      `Server is running on http://localhost:${process.env.PORT}/graphql`
+    );
   });
 };
 
