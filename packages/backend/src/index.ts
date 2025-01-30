@@ -24,7 +24,7 @@ const startServer = async () => {
 
   app.use(
     cors({
-      origin: '*',
+      origin: ['http://localhost:3000', 'https://s-f-test.vercel.app'],
       credentials: true,
       methods: ['POST', 'GET', 'OPTIONS'],
       allowedHeaders: [
@@ -34,7 +34,6 @@ const startServer = async () => {
       ],
     })
   );
-
   app.use('/graphql', bodyParser.json(), expressMiddleware(server));
 
   await connectToDatabase();
