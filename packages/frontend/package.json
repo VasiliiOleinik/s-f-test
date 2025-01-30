@@ -30,6 +30,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@types/apollo-upload-client": "^18.0.0",
     "@types/axios": "^0.14.4",
     "@types/node": "^22.10.10",
     "@types/react": "^19.0.8",
