@@ -24,7 +24,7 @@ const startServer = async () => {
 
   app.use(
     cors({
-      origin: ['http://localhost:3000', 'https://s-f-test.vercel.app/'],
+      origin: ['http://localhost:3000', 'https://s-f-test.vercel.app'],
       credentials: true,
       methods: ['POST', 'GET', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
