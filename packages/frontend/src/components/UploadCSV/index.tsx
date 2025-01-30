@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { UPLOAD_EARTHQUAKES_CSV } from '@/queries';
+import { GET_EARTHQUAKES, UPLOAD_EARTHQUAKES_CSV } from '@/queries';
 import { Card, Spinner } from '@radix-ui/themes';
+import client from '@/apollo/client';
+import { PAGE, LIMIT } from '@/constants';
 
 function UploadCSV() {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [uploadCSV] = useMutation(UPLOAD_EARTHQUAKES_CSV);
+  const [uploadCSV] = useMutation(UPLOAD_EARTHQUAKES_CSV, {
+    refetchQueries: [
+      {
+        query: GET_EARTHQUAKES,
+        variables: { pagination: { page: PAGE, limit: LIMIT } },
+      },
+    ],
+    awaitRefetchQueries: true,
+    onCompleted: () => {
+      client.cache.evict({ fieldName: 'getEarthquakes' });
+    },
+  });
 
   const handleUpload = async () => {
     if (!file) {
