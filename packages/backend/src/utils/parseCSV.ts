@@ -24,6 +24,15 @@ export const parseCSV = async (filePath: string, batchSize: number = 500) => {
         if (earthquakes.length > 0) {
           await Earthquake.insertMany(earthquakes);
         }
+
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error(`Error during file deletion: ${err.message}`);
+          } else {
+            console.log('The file has been successfully deleted:', filePath);
+          }
+        });
+
         resolve({ success: true, message: `CSV loaded and processed` });
       })
       .on('error', (error) => {
